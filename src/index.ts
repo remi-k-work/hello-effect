@@ -9,7 +9,7 @@ const config = Config.string("BASE_URL");
 const getPokemon = Effect.gen(function* () {
   const baseUrl = yield* config;
   const response = yield* Effect.tryPromise({ try: () => fetch(`${baseUrl}/api/v2/pokemon/garchomp/`), catch: () => new FetchError() });
-  if (!response.ok) return yield* new FetchError();
+  if (!response.ok) return yield* Effect.fail(new FetchError());
 
   const json = yield* Effect.tryPromise({ try: () => response.json(), catch: () => new JsonError() });
 

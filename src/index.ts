@@ -1,13 +1,29 @@
-import { Effect } from "effect";
+import { Data, Effect } from "effect";
 
-const fetchRequest = Effect.tryPromise(() => fetch("https://pokeapi.co/api/v2/pokemon/garchomp/"));
+/** Errors **/
+class FetchError extends Data.TaggedError("FetchError")<Readonly<{}>> {}
+class JsonError extends Data.TaggedError("JsonError")<Readonly<{}>> {}
 
-const jsonResponse = (response: Response) => Effect.tryPromise(() => response.json());
+/** Implementation **/
+const fetchRequest = Effect.tryPromise({ try: () => fetch("https://pokeapi.co/api/v2/pokemon/garchomp/"), catch: () => new FetchError() });
+const jsonResponse = (response: Response) => Effect.tryPromise({ try: () => response.json(), catch: () => new JsonError() });
 
-const savePokemon = (pokemon: unknown) => Effect.tryPromise(() => fetch("/api/pokemon", { body: JSON.stringify(pokemon) }));
+const program = Effect.gen(function* () {
+  const response = yield* fetchRequest;
+  if (!response.ok) return yield* new FetchError();
 
-const main = fetchRequest.pipe(Effect.flatMap(jsonResponse), Effect.flatMap(savePokemon));
+  return yield* jsonResponse(response);
+});
 
+/** Error handling **/
+const main = program.pipe(
+  Effect.catchTags({
+    FetchError: () => Effect.succeed("Fetch error"),
+    JsonError: () => Effect.succeed("Json error"),
+  }),
+);
+
+/** Running effect **/
 Effect.runPromise(main).then((result) => {
   console.log(result);
 });

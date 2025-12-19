@@ -1,4 +1,4 @@
-import { Context, Effect, Layer, Schema } from "effect";
+import { Effect, Schema } from "effect";
 import { FetchError, JsonError } from "./errors.js";
 import { Pokemon } from "./schemas.js";
 
@@ -12,7 +12,7 @@ export class PokeApi extends Effect.Service<PokeApi>()("PokeApi", {
 
     return {
       getPokemon: Effect.gen(function* () {
-        const requestUrl = buildPokeApiUrl(pokemonCollection[0]);
+        const requestUrl = buildPokeApiUrl(yield* Effect.fromNullable(pokemonCollection[0]));
 
         const response = yield* Effect.tryPromise({
           try: () => fetch(requestUrl),
@@ -20,9 +20,8 @@ export class PokeApi extends Effect.Service<PokeApi>()("PokeApi", {
         });
 
         if (!response.ok) {
-          return yield* new FetchError();
+          return yield* Effect.fail(new FetchError());
         }
-
         const json = yield* Effect.tryPromise({
           try: () => response.json(),
           catch: () => new JsonError(),

@@ -4,7 +4,10 @@
   "description": "",
   "main": "src/index.js",
   "scripts": {
-    "dev": "tsx --env-file=.env src/index.ts"
+    "dev": "tsx --env-file=.env src/index.ts",
+    "ew2": "tsx --env-file=.env src/ethan-workshop/2-context.ts",
+    "ew3": "tsx --env-file=.env src/ethan-workshop/3-scope.ts",
+    "ew4": "tsx --env-file=.env src/ethan-workshop/4-data.ts"
   },
   "keywords": [],
   "author": "",

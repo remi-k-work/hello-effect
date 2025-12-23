@@ -7,7 +7,10 @@
     "dev": "tsx --env-file=.env src/index.ts",
     "ew2": "tsx --env-file=.env src/ethan-workshop/2-context.ts",
     "ew3": "tsx --env-file=.env src/ethan-workshop/3-scope.ts",
-    "ew4": "tsx --env-file=.env src/ethan-workshop/4-data.ts"
+    "ew4": "tsx --env-file=.env src/ethan-workshop/4-data.ts",
+    "p21": "tsx --env-file=.env src/ethan-workshop/part2-cli/1-original/index.ts",
+    "p22": "tsx --env-file=.env src/ethan-workshop/part2-cli/2-dip-toes/index.ts",
+    "p23": "tsx --env-file=.env src/ethan-workshop/part2-cli/3-typed-errors/index.ts"
   },
   "keywords": [],
   "author": "",
@@ -21,6 +24,7 @@
     "typescript": "^5.9.3"
   },
   "dependencies": {
-    "effect": "^3.19.12"
+    "effect": "^3.19.12",
+    "meow": "^14.0.0"
   }
 }

@@ -10,7 +10,8 @@
     "ew4": "tsx --env-file=.env src/ethan-workshop/4-data.ts",
     "p21": "tsx --env-file=.env src/ethan-workshop/part2-cli/1-original/index.ts",
     "p22": "tsx --env-file=.env src/ethan-workshop/part2-cli/2-dip-toes/index.ts",
-    "p23": "tsx --env-file=.env src/ethan-workshop/part2-cli/3-typed-errors/index.ts"
+    "p23": "tsx --env-file=.env src/ethan-workshop/part2-cli/3-typed-errors/index.ts",
+    "p24": "tsx --env-file=.env src/ethan-workshop/part2-cli/4-typed-dep/index.ts"
   },
   "keywords": [],
   "author": "",

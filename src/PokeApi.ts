@@ -19,9 +19,8 @@ export class PokeApi extends Effect.Service<PokeApi>()("PokeApi", {
           catch: () => new FetchError(),
         });
 
-        if (!response.ok) {
-          return yield* Effect.fail(new FetchError());
-        }
+        if (!response.ok) return yield* new FetchError();
+
         const json = yield* Effect.tryPromise({
           try: () => response.json(),
           catch: () => new JsonError(),

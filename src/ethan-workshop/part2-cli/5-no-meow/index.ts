@@ -1,6 +1,6 @@
 import * as fs from "node:fs/promises";
-import { Console, Effect, Exit, Layer, Option } from "effect";
-import { CLIOptions, Fetch, HeaderParseError, TextDecodeError, UnknownError } from "./model.js";
+import { Console, Effect, Exit, Layer } from "effect";
+import { CLIOptions, Fetch, TextDecodeError, UnknownError } from "./model.js";
 
 const MainLayer = Layer.mergeAll(CLIOptions.Default, Fetch.Default);
 

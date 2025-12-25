@@ -4,7 +4,7 @@ import { StringPairsFromStrings } from "./schemas.js";
 
 export class UnknownError extends Data.TaggedError("UnknownError")<{ readonly error: unknown }> {}
 export class TextDecodeError extends Data.TaggedError("TextDecodeError") {}
-export class HeaderParseError extends Data.TaggedError("HeaderParseError") {}
+export class HeaderParseError extends Data.TaggedError("HeaderParseError")<{ readonly error: unknown }> {}
 export class CliOptionsParseError extends Data.TaggedError("CliOptionsParseError")<{ readonly error: unknown }> {}
 
 export class Fetch extends Effect.Service<Fetch>()("Fetch", {
@@ -21,7 +21,7 @@ export class CLIOptions extends Effect.Service<CLIOptions>()("CLIOptions", {
       getCliOptionMultiple(args, { name: "headers", alias: "H" }),
       Schema.decode(StringPairsFromStrings),
       Effect.map((_) => Object.fromEntries(_)),
-      Effect.mapError(() => new HeaderParseError()),
+      Effect.mapError((error) => new HeaderParseError({ error })),
     );
     const output = getCliOption(args, { name: "output", alias: "O" });
     const include = getCliOption(args, { name: "include", alias: "i" }).pipe(

@@ -1,0 +1,62 @@
+import { Data, Effect, Match, Option, pipe, Schema } from "effect";
+import { FetchHttpClient, HttpClient, HttpClientRequest } from "@effect/platform";
+
+import { getCliOption, getCliOptionMultiple } from "./helpers.js";
+import { StringPairsFromStrings } from "./schemas.js";
+import type { Input } from "@effect/platform/Headers";
+
+export class HeaderParseError extends Data.TaggedError("HeaderParseError")<{ readonly error: unknown }> {}
+export class CliOptionsParseError extends Data.TaggedError("CliOptionsParseError")<{ readonly error: unknown }> {}
+
+export class Fetch extends Effect.Service<Fetch>()("Fetch", {
+  dependencies: [FetchHttpClient.layer],
+
+  effect: Effect.gen(function* () {
+    const client = yield* HttpClient.HttpClient;
+
+    return {
+      getResponse: (url: string, method: string, headers: Record<string, string>, data?: string) =>
+        Effect.gen(function* () {
+          // Resolve the HTTP method function
+          const verb = yield* Match.value(method.toUpperCase()).pipe(
+            Match.when("GET", () => HttpClientRequest.get),
+            Match.when("POST", () => HttpClientRequest.post),
+            Match.when("PUT", () => HttpClientRequest.put),
+            Match.when("PATCH", () => HttpClientRequest.patch),
+            Match.when("DELETE", () => HttpClientRequest.del),
+            Match.option,
+          );
+
+          // Build the request object
+          const req = verb(url).pipe(HttpClientRequest.setHeaders(headers), data ? HttpClientRequest.bodyText(data) : (req) => req);
+
+          // Execute using the client
+          return yield* client.execute(req);
+        }),
+    };
+  }),
+}) {}
+
+export class CLIOptions extends Effect.Service<CLIOptions>()("CLIOptions", {
+  effect: Effect.gen(function* () {
+    const args = yield* Effect.sync(() => process.argv);
+
+    const method = getCliOption(args, { name: "method", alias: "X" }).pipe(Option.getOrElse(() => "GET"));
+    const data = getCliOption(args, { name: "data", alias: "d" }).pipe(Option.getOrUndefined);
+    const headers = yield* pipe(
+      getCliOptionMultiple(args, { name: "headers", alias: "H" }),
+      Schema.decode(StringPairsFromStrings),
+      Effect.map((_) => Object.fromEntries(_)),
+      Effect.mapError((error) => new HeaderParseError({ error })),
+    );
+    const output = getCliOption(args, { name: "output", alias: "O" });
+    const include = getCliOption(args, { name: "include", alias: "i" }).pipe(
+      Option.flatMap((_) => (["true", "false"].includes(_) ? Option.some(_) : Option.none())),
+      Option.map((_) => _ === "true"),
+    );
+
+    const url = yield* Option.fromNullable(args[2]).pipe(Effect.mapError(() => new CliOptionsParseError({ error: "No url provided" })));
+
+    return { url, method, data, headers, output, include } as const;
+  }),
+}) {}

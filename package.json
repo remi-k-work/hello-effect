@@ -12,7 +12,9 @@
     "p22": "tsx --env-file=.env src/ethan-workshop/part2-cli/2-dip-toes/index.ts",
     "p23": "tsx --env-file=.env src/ethan-workshop/part2-cli/3-typed-errors/index.ts",
     "p24": "tsx --env-file=.env src/ethan-workshop/part2-cli/4-typed-dep/index.ts",
-    "p25": "tsx --env-file=.env src/ethan-workshop/part2-cli/5-no-meow/index.ts"
+    "p25": "tsx --env-file=.env src/ethan-workshop/part2-cli/5-no-meow/index.ts",
+    "p26": "tsx --env-file=.env src/ethan-workshop/part2-cli/6-effect-platform/index.ts",
+    "p27": "tsx --env-file=.env src/ethan-workshop/part2-cli/7-effect-cli/index.ts"
   },
   "keywords": [],
   "author": "",
@@ -26,6 +28,9 @@
     "typescript": "^5.9.3"
   },
   "dependencies": {
+    "@effect/cli": "^0.73.0",
+    "@effect/platform": "^0.94.0",
+    "@effect/platform-node": "^0.104.0",
     "effect": "^3.19.12",
     "meow": "^14.0.0"
   }

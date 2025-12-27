@@ -51,12 +51,17 @@ export class CLIOptions extends Effect.Service<CLIOptions>()("CLIOptions", {
   effect: Effect.gen(function* () {
     const args = yield* Effect.sync(() => process.argv);
 
-    const method = getCliOption(args, { name: "method", alias: "X" }).pipe(Option.getOrElse(() => "GET"));
-    const data = getCliOption(args, { name: "data", alias: "d" }).pipe(Option.getOrUndefined);
+    const method = getCliOption(args, { name: "method", alias: "X" }).pipe(Option.getOrElse(() => "GET" as const)) as
+      | "GET"
+      | "POST"
+      | "PUT"
+      | "PATCH"
+      | "DELETE";
+    const data = getCliOption(args, { name: "data", alias: "d" });
     const headers = yield* pipe(
       getCliOptionMultiple(args, { name: "headers", alias: "H" }),
       Schema.decode(StringPairsFromStrings),
-      Effect.map((_) => Object.fromEntries(_)),
+      // Keep as tuple array to match CLIOptionsType
       Effect.mapError((error) => new HeaderParseError({ error })),
     );
     const output = getCliOption(args, { name: "output", alias: "O" });

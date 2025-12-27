@@ -30,9 +30,9 @@ function main() {
     const finalString = buffer.join("\n");
 
     const fs = yield* FileSystem.FileSystem;
-    yield* Effect.matchEffect(output, {
-      onSuccess: (output) => fs.writeFileString(output, finalString),
-      onFailure: () => Console.log(finalString),
+    yield* Option.match(output, {
+      onNone: () => Console.log(finalString),
+      onSome: (path) => fs.writeFileString(path, finalString),
     });
   }).pipe(Effect.scoped);
 }

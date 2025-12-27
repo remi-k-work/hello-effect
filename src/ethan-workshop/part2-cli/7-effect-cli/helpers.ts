@@ -4,7 +4,7 @@ import { Array, Option } from "effect";
 export function getCliOption(cliArgs: string[], option: { name: string; alias?: string }): Option.Option<string> {
   return Option.gen(function* () {
     // findFirstIndex returns Option<number> automatically!
-    const index = yield* Array.findFirstIndex(cliArgs, (arg) => arg === `--${option.name}` || arg === `-${option.alias}`);
+    const index = yield* Array.findFirstIndex(cliArgs, (arg) => arg === `--${option.name}` || (option.alias !== undefined && arg === `-${option.alias}`));
 
     // Array.get returns Option<string> safely (handles out-of-bounds)
     return yield* Array.get(cliArgs, index + 1);
@@ -15,7 +15,7 @@ export function getCliOption(cliArgs: string[], option: { name: string; alias?: 
 export function getCliOptionMultiple(cliArgs: string[], option: { name: string; alias?: string }): string[] {
   return Array.filterMap(cliArgs, (arg, index) => {
     // Check if the current argument matches the flag
-    const isMatch = arg === `--${option.name}` || arg === `-${option.alias}`;
+    const isMatch = arg === `--${option.name}` || (option.alias !== undefined && arg === `-${option.alias}`);
 
     if (isMatch) {
       // Safely look ahead for the value

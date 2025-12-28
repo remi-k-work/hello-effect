@@ -15,7 +15,9 @@
     "p25": "tsx --env-file=.env src/ethan-workshop/part2-cli/5-no-meow/index.ts",
     "p26": "tsx --env-file=.env src/ethan-workshop/part2-cli/6-effect-platform/index.ts",
     "p27": "tsx --env-file=.env src/ethan-workshop/part2-cli/7-effect-cli/index.ts",
-    "p28": "tsx --env-file=.env src/ethan-workshop/part2-cli/8-scheduling-no/index.ts"
+    "p28": "tsx --env-file=.env src/ethan-workshop/part2-cli/8-scheduling-no/index.ts",
+    "wd0": "tsx --env-file=.env src/workshop-2025-sec1/demo/prov-a-service-00.ts",
+    "wd1": "tsx --env-file=.env src/workshop-2025-sec1/demo/prov-a-service-01.ts"
   },
   "keywords": [],
   "author": "",

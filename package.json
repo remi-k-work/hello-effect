@@ -17,7 +17,8 @@
     "p27": "tsx --env-file=.env src/ethan-workshop/part2-cli/7-effect-cli/index.ts",
     "p28": "tsx --env-file=.env src/ethan-workshop/part2-cli/8-scheduling-no/index.ts",
     "wd0": "tsx --env-file=.env src/workshop-2025-sec1/demo/prov-a-service-00.ts",
-    "wd1": "tsx --env-file=.env src/workshop-2025-sec1/demo/prov-a-service-01.ts"
+    "wd1": "tsx --env-file=.env src/workshop-2025-sec1/demo/prov-a-service-01.ts",
+    "ale": "tsx --env-file=.env src/aleksandra-codes/index.ts"
   },
   "keywords": [],
   "author": "",

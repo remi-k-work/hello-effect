@@ -1,4 +1,6 @@
 import { Effect, Schema } from "effect";
+import { FetchHttpClient, HttpClient, HttpClientRequest, HttpClientResponse } from "@effect/platform";
+
 import { FetchError, JsonError } from "./errors.js";
 import { Pokemon } from "./schemas.js";
 
@@ -31,4 +33,24 @@ export class PokeApi extends Effect.Service<PokeApi>()("PokeApi", {
     };
   }),
   dependencies: [PokemonCollection.Default, BuildPokeApiUrl.Default],
+}) {}
+
+export class PokeApi2 extends Effect.Service<PokeApi2>()("PokeApi2", {
+  dependencies: [PokemonCollection.Default, BuildPokeApiUrl.Default, FetchHttpClient.layer],
+
+  effect: Effect.gen(function* () {
+    const pokemonCollection = yield* PokemonCollection;
+    const buildPokeApiUrl = yield* BuildPokeApiUrl;
+    const client = (yield* HttpClient.HttpClient).pipe(HttpClient.filterStatusOk, HttpClient.mapRequest(HttpClientRequest.acceptJson));
+
+    return {
+      getPokemon: Effect.gen(function* () {
+        const requestUrl = buildPokeApiUrl(yield* Effect.fromNullable(pokemonCollection[0]));
+
+        const response = yield* client.get(requestUrl);
+
+        return yield* HttpClientResponse.schemaBodyJson(Pokemon)(response);
+      }),
+    };
+  }),
 }) {}

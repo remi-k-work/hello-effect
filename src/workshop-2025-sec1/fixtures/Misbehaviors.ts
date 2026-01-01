@@ -21,7 +21,7 @@ export const misbehaviors = [
     severity: 3,
     description: "Overutilization of red arrows for emphasis when asking " + "others questions about or for assistance with Effect",
   }),
-];
+] as const;
 
 export const awardDefaultTokens = Effect.gen(function* () {
   const tokenManager = yield* ImmunityTokenManager;

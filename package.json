@@ -5,6 +5,7 @@
   "main": "src/index.js",
   "scripts": {
     "dev": "tsx --env-file=.env src/index.ts",
+    "test": "vitest",
     "ew2": "tsx --env-file=.env src/ethan-workshop/2-context.ts",
     "ew3": "tsx --env-file=.env src/ethan-workshop/3-scope.ts",
     "ew4": "tsx --env-file=.env src/ethan-workshop/4-data.ts",
@@ -27,9 +28,11 @@
   "devDependencies": {
     "@effect/language-service": "^0.62.4",
     "@types/node": "^25.0.2",
+    "msw": "^2.12.7",
     "prettier": "^3.7.4",
     "tsx": "^4.21.0",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.16"
   },
   "dependencies": {
     "@effect/cli": "^0.73.0",

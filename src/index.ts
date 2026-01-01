@@ -9,9 +9,7 @@ const program = Effect.gen(function* () {
   return yield* pokeApi.getPokemon;
 });
 
-const runnable = program.pipe(Effect.provide(MainLayer));
-
-const main = runnable.pipe(
+const main = program.pipe(
   Effect.catchTags({
     FetchError: () => Effect.succeed("Fetch error"),
     JsonError: () => Effect.succeed("Json error"),
@@ -19,4 +17,4 @@ const main = runnable.pipe(
   }),
 );
 
-PokemonRuntime.runPromise(main).then(console.log);
+PokemonRuntime.runPromise(main).then(console.log).catch(console.error);

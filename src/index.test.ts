@@ -19,10 +19,8 @@ const program = Effect.gen(function* () {
   return yield* pokeApi.getPokemon;
 });
 
-const runnable = program.pipe(Effect.provide(MainLayer));
-
 it("returns a valid pokemon", async () => {
-  const response = await TestingRuntime.runPromise(runnable);
+  const response = await TestingRuntime.runPromise(program);
   expect(response).toEqual({
     id: 1,
     height: 10,
